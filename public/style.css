@@ -1,0 +1,81 @@
+:root {
+  font-size: 14px;
+  color-scheme: light dark;
+
+  --text: light-dark(#000, #fff);
+  --danger: light-dark(#93000a, #ffdad6);
+  --success: light-dark(#005c0a, #d6ffda);
+
+  --bg-logo: light-dark(#e9e9f2, #242628);
+
+  --bg-danger: light-dark(#ffdad6, #93000a);
+  --bg-success: light-dark(#d6ffda, #005c0a);
+  --bg: light-dark(#f3f3fa, #191c20);
+
+  --input-bg: light-dark(#fff, #0c0e13);
+}
+
+body {
+  margin: 2rem;
+  background: var(--bg);
+  color: var(--text);
+}
+
+main {
+  position: relative;
+
+  h1 {
+    position: fixed;
+    color: var(--bg-logo);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100vh;
+    font-size: min(100vw, 100vh);
+    line-height: 80vh;
+    z-index: 1;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 2;
+  }
+}
+
+input, textarea {
+  color: var(--text);
+}
+
+fieldset {
+  border: none;
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+
+  .col-title {
+    flex-grow: 0.25;
+  }
+  .col-content {
+    flex-grow: 1;
+  }
+
+  button {
+    min-width: 4rem;
+    border: 1px solid var(--danger);
+    background-color: var(--bg-danger);
+    color: var(--danger);
+
+    &.new {
+      border-color: var(--success);
+      color: var(--success);
+      background-color: var(--bg-success);
+    }
+  }
+}

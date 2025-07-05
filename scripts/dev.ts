@@ -9,19 +9,25 @@ await Promise.all([
   copyPublic(),
 ]);
 
+const makeAttempt = async (text: string, promise: Promise<any>) => {
+  process.stdout.write(text);
+  try {
+    await promise;
+    process.stdout.write(' done.\n');
+  } catch (error) {
+    process.stderr.write(` error:\n ${error}\n`);
+  }
+};
+
 const publicWatcher = watch(publicDir, { recursive: true }, async (eventType, filename) => {
   if (filename && (eventType === 'change' || eventType === 'rename')) {
-    process.stdout.write(`${filename} changed, copying...`);
-    await copyPublic();
-    process.stdout.write(' done.\n');
+    await makeAttempt(`${filename} changed, copying...`, copyPublic());
   }
 });
 
 const srcWatcher = watch(srcDir, { recursive: true }, async (eventType, filename) => {
   if (filename && (eventType === 'change' || eventType === 'rename')) {
-    process.stdout.write(`${filename} changed, rebuilding...`);
-    await bundle();
-    process.stdout.write(' done.\n');
+    await makeAttempt(`${filename} changed, rebuilding...`, bundle());
   }
 });
 

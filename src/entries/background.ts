@@ -1,4 +1,4 @@
-import { createMenu } from './modules/getInsertItems';
+import { createMenu } from '../getInsertItems';
 
 const config = chrome.storage.local.getKeys().then(k => console.log('Config keys:', k));
 
