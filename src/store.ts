@@ -1,48 +1,45 @@
 import { signal } from '@preact/signals';
+import { config } from './config';
+import type { IEntry } from './IEntry';
+import { refreshMenu } from './menu';
 
-export type Entry = {
-  id: number | 'new';
-  title: string;
-  content: string;
-};
-
-const emptyEntry: Entry = {
+const emptyEntry: IEntry = {
   id: 'new',
   title: '',
   content: '',
 };
 
 export const store = {
-  ids: signal<number[]>([]),
-  entries: signal<Record<number | 'new', Entry>>({
+  ids: signal<string[]>([]),
+  entries: signal<Record<string, IEntry>>({
     new: emptyEntry,
   }),
 };
 
 export const loadAll = async () => {
-  const { entries } = await chrome.storage.local.get({ entries: [] });
-  const entriesMap = entries.reduce((acc: Record<number | 'new', Entry>, entry: Entry) => {
+  const entries = await config.getEntries();
+  const entriesMap = entries.reduce((acc: Record<string, IEntry>, entry: IEntry) => {
     acc[entry.id] = entry;
     return acc;
-  }, {});
+  }, {} as Record<string, IEntry>);
   store.entries.value = {
     ...entriesMap,
     new: emptyEntry,
   };
-  store.ids.value = entries.map((entry: Entry) => entry.id);
+  store.ids.value = entries.map((entry: IEntry) => entry.id);
 };
 
-export const update = (entry: Entry) => {
+export const updateValues = (entry: IEntry) => {
   store.entries.value = {
     ...store.entries.value,
     [entry.id!]: entry,
   };
 };
 
-export const save = async () => {
+export const saveAll = async () => {
   let i = 0;
   do {
-    const id = store.ids.value[i] as any;
+    const id = store.ids.value[i] as string;
     const entries = { ...store.entries.value };
     const entry = store.entries.value[id];
 
@@ -61,26 +58,28 @@ export const save = async () => {
     i++;
   } while (i < store.ids.value.length);
 
-  chrome.storage.local.set({
-    entries: store.ids.value.map(
+  await config.setEntries(
+    store.ids.value.map(
       (id) => store.entries.value[id],
-    ),
-  });
+    ) as IEntry[],
+  );
+
+  await refreshMenu();
 };
 
-export const remove = (id: number) => {
+export const removeById = (id: string) => {
   const newState = { ...store.entries.value };
   delete newState[id];
   store.entries.value = newState;
   store.ids.value = store.ids.value.filter((entryId) => entryId !== id);
-  save();
+  saveAll();
 };
 
 const create = () => {
-  if (!store.entries.value.new.content) {
+  if (!store.entries.value.new?.content) {
     return;
   }
-  const id = Date.now();
+  const id = String(Date.now());
   store.entries.value = {
     ...store.entries.value,
     [id]: {
@@ -95,13 +94,13 @@ const create = () => {
     },
   };
   store.ids.value = [...store.ids.value, id];
-  save();
+  saveAll();
 };
 
-export const upsert = (id: number | 'new') => {
+export const upsert = (id: string) => {
   if (id === 'new') {
     create();
   } else {
-    save();
+    saveAll();
   }
 };

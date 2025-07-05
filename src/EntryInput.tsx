@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { remove, store, update, upsert } from './store';
+import { removeById, store, updateValues, upsert } from './store';
 
 type Props = {
-  id: number | 'new';
+  id: string;
 };
 
 export const EntryInput = ({ id = 'new' }: Props) => {
@@ -16,7 +16,7 @@ export const EntryInput = ({ id = 'new' }: Props) => {
         className="col-title"
         onInput={({ target }) => {
           const value = (target as HTMLInputElement).value;
-          update({ ...entry, title: value });
+          updateValues({ ...entry, title: value });
         }}
       />
 
@@ -26,7 +26,7 @@ export const EntryInput = ({ id = 'new' }: Props) => {
         value={entry.content}
         onInput={({ target }) => {
           const value = (target as HTMLTextAreaElement).value;
-          update({ ...entry, content: value });
+          updateValues({ ...entry, content: value });
         }}
         onBlur={() => upsert(id)}
       />
@@ -34,7 +34,7 @@ export const EntryInput = ({ id = 'new' }: Props) => {
       <button
         className={clsx({ 'new': isNew })}
         type="button"
-        onClick={() => remove(id as number)}
+        onClick={() => removeById(id)}
       >
         {isNew ? '+' : '-'}
       </button>

@@ -2,11 +2,6 @@ import { useEffect } from 'preact/hooks';
 import { EntryInput } from './EntryInput';
 import { loadAll, store } from './store';
 
-const shortened = (str: string) => {
-  if (str.length <= 20) return str;
-  return str.slice(0, 17) + '...';
-};
-
 export const OptionsPage = () => {
   useEffect(() => {
     loadAll();
@@ -26,6 +21,9 @@ export const OptionsPage = () => {
 
           <EntryInput id="new" />
         </form>
+        <p>
+          * options are saved automatically
+        </p>
       </main>
     </>
   );
