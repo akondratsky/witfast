@@ -1,0 +1,22 @@
+{
+  "name": "witfast",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "chrome-types": "0.1.359",
+    "dprint": "0.50.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "private": true,
+  "scripts": {
+    "build": "bun scripts/build.ts",
+    "dev": "bun scripts/dev.ts"
+  },
+  "type": "module",
+  "dependencies": {
+    "@preact/signals": "2.2.1",
+    "preact": "10.26.9"
+  }
+}

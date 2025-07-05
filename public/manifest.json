@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "WitFast",
+  "version": "1.0",
+  "description": "Quick snippets in the context menu",
+  "permissions": [
+    "contextMenus",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_icon": {
+      "128": "icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true,
+    "browser_style": true
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}
