@@ -15,7 +15,6 @@ export const clean = async () => {
 export const bundle = () =>
   build({
     entrypoints: [
-      './src/entries/content.ts',
       './src/entries/background.ts',
       './src/entries/options.tsx',
     ],

@@ -20,10 +20,10 @@ export const OptionsPage = () => {
           {store.ids.value.map((id) => <EntryInput id={id} key={id} />)}
 
           <EntryInput id="new" />
+          <p>
+            * options are saved automatically
+          </p>
         </form>
-        <p>
-          * options are saved automatically
-        </p>
       </main>
     </>
   );
