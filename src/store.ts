@@ -1,7 +1,6 @@
 import { signal } from '@preact/signals';
 import { config } from './config';
 import type { IEntry } from './IEntry';
-import { refreshMenu } from './menu';
 
 const emptyEntry: IEntry = {
   id: 'new',
@@ -64,7 +63,7 @@ export const saveAll = async () => {
     ) as IEntry[],
   );
 
-  await refreshMenu();
+  chrome.runtime.sendMessage({ type: 'refreshMenu' });
 };
 
 export const removeById = (id: string) => {

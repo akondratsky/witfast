@@ -8,6 +8,7 @@ const shortened = (str: string) => {
 };
 
 let contentById: Record<string, string> = {};
+let listener: (info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => void;
 
 export const refreshMenu = async () => {
   const entries = await config.getEntries();
@@ -35,10 +36,34 @@ export const refreshMenu = async () => {
     });
   });
 
-  chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (listener) {
+    chrome.contextMenus.onClicked.removeListener(listener);
+  }
+
+  listener = (info, tab) => {
     const content = contentById[info.menuItemId];
     if (content) {
-      console.log('FOUND!!! WORKS!!!', content);
+      chrome.scripting.executeScript({
+        target: { tabId: tab!.id! },
+        args: [content],
+        func: ((content: string) => {
+          const el = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
+          el.value += content;
+
+          const inputEvent = new Event('input', { bubbles: true });
+          const changeEvent = new Event('change', { bubbles: true });
+
+          // Dirty fix for React: set value via native setter (ChatGPT said)
+          const prototype = Object.getPrototypeOf(el);
+          const setter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
+          setter?.call(el, content);
+
+          el.dispatchEvent(inputEvent);
+          el.dispatchEvent(changeEvent);
+        }) as any,
+      });
     }
-  });
+  };
+
+  chrome.contextMenus.onClicked.addListener(listener);
 };

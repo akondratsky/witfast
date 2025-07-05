@@ -6,7 +6,8 @@
   "permissions": [
     "contextMenus",
     "scripting",
-    "storage"
+    "storage",
+    "activeTab"
   ],
   "action": {
     "default_icon": {
