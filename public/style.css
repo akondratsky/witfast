@@ -49,6 +49,10 @@ main {
   }
 }
 
+p {
+  padding: 1rem;
+}
+
 input, textarea {
   color: var(--text);
 }
