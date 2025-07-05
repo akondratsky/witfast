@@ -55,6 +55,7 @@ p {
 
 input, textarea {
   color: var(--text);
+  padding: 0.5rem;
 }
 
 fieldset {
@@ -63,8 +64,16 @@ fieldset {
   width: 100%;
   gap: 1rem;
 
+  input {
+    height: 2rem;
+  }
+
+  textarea {
+    field-sizing: content;
+  }
+
   .col-title {
-    flex-grow: 0.25;
+    width: 300px;
   }
   .col-content {
     flex-grow: 1;
@@ -72,6 +81,9 @@ fieldset {
 
   button {
     min-width: 4rem;
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1rem;
     border: 1px solid var(--danger);
     background-color: var(--bg-danger);
     color: var(--danger);

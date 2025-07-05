@@ -36,7 +36,7 @@ export const EntryInput = ({ id = 'new' }: Props) => {
         type="button"
         onClick={() => removeById(id)}
       >
-        {isNew ? '+' : '-'}
+        {isNew ? '+' : <>&ndash;</>}
       </button>
     </fieldset>
   );
