@@ -9,7 +9,7 @@ export const EntryInput = ({ id = 'new' }: Props) => {
   const entry = store.entries.value[id]!;
   const isNew = id === 'new';
   return (
-    <fieldset role="group">
+    <fieldset role="group" className="entry-row">
       <input
         value={entry.title}
         type="text"
@@ -32,7 +32,7 @@ export const EntryInput = ({ id = 'new' }: Props) => {
       />
 
       <button
-        className={clsx({ 'new': isNew })}
+        className={clsx('row-button', { 'new': isNew })}
         type="button"
         onClick={() => removeById(id)}
       >

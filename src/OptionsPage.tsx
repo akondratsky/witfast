@@ -1,4 +1,5 @@
 import { useEffect } from 'preact/hooks';
+import { Actions } from './Actions';
 import { EntryInput } from './EntryInput';
 import { loadAll, store } from './store';
 
@@ -11,16 +12,23 @@ export const OptionsPage = () => {
     <>
       <main>
         <h1>Ы</h1>
+        {store.error.value && (
+          <div className="error">
+            {store.error.value}
+          </div>
+        )}
         <form>
-          <fieldset role="group">
+          <fieldset className="entry-row">
             <h3 className="col-title">Title (optional)</h3>
             <h3 className="col-content">Content</h3>
+
+            <Actions />
           </fieldset>
 
           {store.ids.value.map((id) => <EntryInput id={id} key={id} />)}
 
           <EntryInput id="new" />
-          <p>
+          <p className="note">
             * options are saved automatically
           </p>
         </form>

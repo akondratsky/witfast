@@ -13,6 +13,7 @@ export const store = {
   entries: signal<Record<string, IEntry>>({
     new: emptyEntry,
   }),
+  error: signal<string | null>(null),
 };
 
 export const loadAll = async () => {

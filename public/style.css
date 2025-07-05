@@ -1,8 +1,10 @@
+/* theming (dark/light) */
 :root {
   font-size: 14px;
   color-scheme: light dark;
 
   --text: light-dark(#000, #fff);
+  --text-danger: #f00;
   --danger: light-dark(#93000a, #ffdad6);
   --success: light-dark(#005c0a, #d6ffda);
 
@@ -15,12 +17,26 @@
   --input-bg: light-dark(#fff, #0c0e13);
 }
 
+/* #region global styles */
 body {
   margin: 2rem;
   background: var(--bg);
   color: var(--text);
 }
 
+input, textarea {
+  color: var(--text);
+  padding: 0.5rem;
+}
+input {
+  height: 2rem;
+}
+textarea {
+  field-sizing: content;
+}
+/* #endregion global styles */
+
+/* #region main layout */
 main {
   position: relative;
 
@@ -47,29 +63,15 @@ main {
     gap: 0.5rem;
     z-index: 2;
   }
-  p {
-    padding: 1rem;
-  }
 }
 
-input, textarea {
-  color: var(--text);
-  padding: 0.5rem;
-}
+/* #endregion main layout */
 
-fieldset {
+.entry-row {
   border: none;
   display: flex;
   width: 100%;
   gap: 1rem;
-
-  input {
-    height: 2rem;
-  }
-
-  textarea {
-    field-sizing: content;
-  }
 
   .col-title {
     width: 300px;
@@ -78,7 +80,7 @@ fieldset {
     flex-grow: 1;
   }
 
-  button {
+  .row-button {
     min-width: 4rem;
     font-size: 2rem;
     font-weight: 900;
@@ -93,4 +95,40 @@ fieldset {
       background-color: var(--bg-success);
     }
   }
+}
+
+.error {
+  position: fixed;
+  align-self: center;
+  color: var(--danger);
+  background-color: var(--bg-danger);
+  font-weight: 900;
+  bottom: 0;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-left: 1rem;
+  align-self: center;
+
+  .action {
+    padding: 0.5rem 1rem;
+    height: 2rem;
+    border: 1px solid var(--text);
+    background-color: var(--input-bg);
+    color: var(--text);
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--bg-logo);
+      box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.note {
+  padding: 1rem;
 }
