@@ -1,5 +1,5 @@
 import { render } from 'preact';
-import { OptionsPage } from '../OptionsPage';
+import { OptionsPage } from 'src/options/OptionsPage';
 
 const rootEl = document.getElementById('app');
 

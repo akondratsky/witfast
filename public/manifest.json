@@ -17,19 +17,6 @@
   "icons": {
     "16": "icon16.png"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content.js"
-      ],
-      "all_frames": false,
-      "run_at": "document_idle",
-      "world": "ISOLATED"
-    }
-  ],
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true,

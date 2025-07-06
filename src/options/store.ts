@@ -1,6 +1,6 @@
 import { signal } from '@preact/signals';
-import { config } from './config';
-import type { IEntry } from './IEntry';
+import { config } from 'src/common/config';
+import type { IEntry } from 'src/common/IEntry';
 
 const emptyEntry: IEntry = {
   id: 'new',

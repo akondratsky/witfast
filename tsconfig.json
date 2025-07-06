@@ -4,6 +4,7 @@
       "ESNext",
       "DOM"
     ],
+    "outDir": "dist",
     "target": "ESNext",
     "module": "esnext",
     "moduleDetection": "force",
@@ -24,6 +25,11 @@
     "noPropertyAccessFromIndexSignature": false,
     "types": [
       "chrome-types"
-    ]
+    ],
+    "paths": {
+      "src/*": [
+        "./src/*"
+      ]
+    },
   }
 }

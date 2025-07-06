@@ -1,4 +1,5 @@
-import { disposeMenu, refreshMenu } from '../menu';
+import { disposeMenu, refreshMenu } from 'src/background/menu';
+import { menuClickListener } from 'src/background/menuClickListener';
 
 chrome.action.onClicked.addListener(() => {
   chrome.runtime.openOptionsPage();
@@ -17,9 +18,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     refreshMenu();
   }
   sendResponse();
-  return true; // Keep the message channel open for sendResponse
+  return true;
 });
 
 chrome.runtime.onRestartRequired.addListener(async () => {
   await disposeMenu();
 });
+
+chrome.contextMenus.onClicked.addListener(menuClickListener);

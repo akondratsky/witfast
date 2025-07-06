@@ -1,4 +1,4 @@
-import { connector } from './connector';
+import { connector } from 'src/options/connector';
 
 export const Actions = () => {
   return (

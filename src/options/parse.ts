@@ -1,4 +1,4 @@
-import type { IEntry } from './IEntry';
+import type { IEntry } from 'src/common/IEntry';
 
 type ParseResult = {
   entries: IEntry[] | null;

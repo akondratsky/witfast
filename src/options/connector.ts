@@ -1,6 +1,6 @@
-import { config } from './config';
-import { parse } from './parse';
-import { loadAll, store } from './store';
+import { config } from 'src/common/config';
+import { parse } from 'src/options/parse';
+import { loadAll, store } from 'src/options/store';
 
 const getJson = async () => {
   const entries = await config.getEntries();

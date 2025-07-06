@@ -1,7 +1,7 @@
 import { useEffect } from 'preact/hooks';
-import { Actions } from './Actions';
-import { EntryInput } from './EntryInput';
-import { loadAll, store } from './store';
+import { Actions } from 'src/options/Actions';
+import { EntryInput } from 'src/options/EntryInput';
+import { loadAll, store } from 'src/options/store';
 
 export const OptionsPage = () => {
   useEffect(() => {

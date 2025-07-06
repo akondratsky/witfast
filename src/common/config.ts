@@ -1,4 +1,4 @@
-import type { IEntry } from './IEntry';
+import type { IEntry } from 'src/common/IEntry';
 
 export const config = {
   setEntries: async (entries: IEntry[]) => {

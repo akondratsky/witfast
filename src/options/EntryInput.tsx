@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { removeById, store, updateValues, upsert } from './store';
+import { removeById, store, updateValues, upsert } from 'src/options/store';
 
 type Props = {
   id: string;
