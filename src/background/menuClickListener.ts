@@ -1,40 +1,37 @@
-import { getContentById } from 'src/background/menu';
+import { getContentById } from 'src/background/entries';
+import { insertDivValue } from 'src/background/insertDivValue';
+import { insertInputValue } from 'src/background/insertInputValue';
+
+const handleError = (error: string) => {
+  console.error(`WitFast Error: ${error}`);
+};
 
 export const menuClickListener = async (
   info: chrome.contextMenus.OnClickData,
   tab?: chrome.tabs.Tab,
 ) => {
   const content = await getContentById(info.menuItemId);
-  if (content) {
+  if (content && tab?.id) {
     chrome.scripting.executeScript({
-      target: { tabId: tab!.id! },
+      target: { tabId: tab.id },
       args: [content],
       func: ((content: string) => {
-        const el = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
+        const activeElem = document.activeElement;
 
-        let newValue = content;
-
-        if (el.selectionStart !== null && el.selectionEnd !== null) {
-          const start = el.selectionStart;
-          const end = el.selectionEnd;
-          const before = el.value.substring(0, start);
-          const after = el.value.substring(end);
-          newValue = el.value = before + content + after;
-          el.selectionStart = el.selectionEnd = start + content.length;
-        } else {
-          el.value = newValue;
+        if (!activeElem) {
+          return handleError('No active element found');
         }
 
-        const inputEvent = new Event('input', { bubbles: true });
-        const changeEvent = new Event('change', { bubbles: true });
-
-        // Dirty fix for React: set value via native setter (ChatGPT said)
-        const prototype = Object.getPrototypeOf(el);
-        const setter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
-        setter?.call(el, newValue);
-
-        el.dispatchEvent(inputEvent);
-        el.dispatchEvent(changeEvent);
+        // Element handling
+        switch (activeElem.tagName.toLocaleLowerCase()) {
+          case 'textarea':
+          case 'input':
+            insertInputValue(content);
+            break;
+          case 'div':
+            insertDivValue(content);
+            break;
+        }
       }) as any,
     });
   }

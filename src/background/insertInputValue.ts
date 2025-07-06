@@ -1,0 +1,30 @@
+export const insertInputValue = (content: string) => {
+  const el = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
+
+  let newValue = content;
+
+  if (el.selectionStart !== null && el.selectionEnd !== null) {
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const before = el.value.substring(0, start);
+    const after = el.value.substring(end);
+    newValue = el.value = before + content + after;
+    const actualLength = el.tagName.toLocaleLowerCase() === 'input'
+      ? content.replace(/\n/g, '').length
+      : content.length;
+    el.selectionStart = el.selectionEnd = start + actualLength;
+  } else {
+    el.value = newValue;
+  }
+
+  const inputEvent = new Event('input', { bubbles: true });
+  const changeEvent = new Event('change', { bubbles: true });
+
+  // Dirty fix for React: set value via native setter (ChatGPT said)
+  const prototype = Object.getPrototypeOf(el);
+  const setter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
+  setter?.call(el, newValue);
+
+  el.dispatchEvent(inputEvent);
+  el.dispatchEvent(changeEvent);
+};
