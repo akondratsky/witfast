@@ -2,6 +2,8 @@
 
 WitFast is a minimalistic Chrome Extension for injecting predefined text values through the context menu and one root item.
 
+![WitFast Logo](./public/icon128.png)
+
 Check screenshots, if you are not sure.
 
 ## Dev Notes
