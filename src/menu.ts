@@ -10,6 +10,13 @@ const shortened = (str: string) => {
 let contentById: Record<string, string> = {};
 let listener: (info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => void;
 
+export const disposeMenu = async () => {
+  await chrome.contextMenus.removeAll();
+  if (listener) {
+    chrome.contextMenus.onClicked.removeListener(listener);
+  }
+};
+
 export const refreshMenu = async () => {
   const entries = await config.getEntries();
 
@@ -19,12 +26,19 @@ export const refreshMenu = async () => {
     return acc;
   }, {} as Record<string, string>);
 
-  await chrome.contextMenus.removeAll();
+  await disposeMenu();
 
   chrome.contextMenus.create({
     id: ROOT_MENU_ITEM,
     title: 'Insert',
     contexts: ['editable'],
+    documentUrlPatterns: [
+      'http://*:*/*',
+      'http://*/*',
+      'https://*/*',
+      'https://*:*/*',
+      'file:///',
+    ],
   });
 
   entries.forEach(({ id, content, title }) => {
@@ -36,10 +50,6 @@ export const refreshMenu = async () => {
     });
   });
 
-  if (listener) {
-    chrome.contextMenus.onClicked.removeListener(listener);
-  }
-
   listener = (info, tab) => {
     const content = contentById[info.menuItemId];
     if (content) {
@@ -48,7 +58,19 @@ export const refreshMenu = async () => {
         args: [content],
         func: ((content: string) => {
           const el = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
-          el.value += content;
+
+          let newValue = content;
+
+          if (el.selectionStart !== null && el.selectionEnd !== null) {
+            const start = el.selectionStart;
+            const end = el.selectionEnd;
+            const before = el.value.substring(0, start);
+            const after = el.value.substring(end);
+            newValue = el.value = before + content + after;
+            el.selectionStart = el.selectionEnd = start + content.length;
+          } else {
+            el.value = newValue;
+          }
 
           const inputEvent = new Event('input', { bubbles: true });
           const changeEvent = new Event('change', { bubbles: true });
@@ -56,7 +78,7 @@ export const refreshMenu = async () => {
           // Dirty fix for React: set value via native setter (ChatGPT said)
           const prototype = Object.getPrototypeOf(el);
           const setter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
-          setter?.call(el, content);
+          setter?.call(el, newValue);
 
           el.dispatchEvent(inputEvent);
           el.dispatchEvent(changeEvent);
