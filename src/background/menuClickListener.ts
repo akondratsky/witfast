@@ -33,9 +33,19 @@ export const menuClickListener = async (
 
             let newValue = content;
 
-            if (el.selectionStart !== null && el.selectionEnd !== null) {
-              const start = el.selectionStart;
-              const end = el.selectionEnd;
+            const wf = window.__WITFAST_SELECTION__;
+            let start;
+            let end;
+            if (typeof wf !== 'undefined' && wf.getSelection) {
+              const selection = wf.getSelection();
+              start = selection.start;
+              end = selection.end;
+            } else {
+              start = el.selectionStart;
+              end = el.selectionEnd;
+            }
+
+            if (start !== null && end !== null) {
               const before = el.value.substring(0, start);
               const after = el.value.substring(end);
               newValue = el.value = before + content + after;

@@ -17,6 +17,7 @@ export const bundle = () =>
     entrypoints: [
       './src/background.ts',
       './src/options.tsx',
+      './src/content.ts',
     ],
     outdir: outDir,
   });

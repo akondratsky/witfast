@@ -22,6 +22,20 @@
     "open_in_tab": true,
     "browser_style": true
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*",
+        "file:///",
+        "http://*:*/*",
+        "https://*:*/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ],
   "background": {
     "service_worker": "background.js"
   }
